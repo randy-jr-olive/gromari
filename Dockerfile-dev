@@ -50,3 +50,4 @@ RUN apt-get autoremove --purge -y \
 RUN mkdir /code
 run mkdir /celery-pidfiles
 WORKDIR /code
+ADD . /code
