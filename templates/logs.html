@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Predicto - Logs{% endblock %}
+
+{% block content%}
+<div class="row">
+    <div id="celeryLog" class="col-sm-12 col-md-6 col-lg-6">Celery Log
+        <div style="float:right">
+            <button class="btn btn-sm btn-outline-dark" name="autoRrefreshCeleryLog" value="Auto Refresh" id="autoRrefreshCeleryLog" type="button">Auto Refresh</button>
+        </div>
+        <div style="height:700px; border:1px solid #ccc; overflow:auto; margin-top:1em;">
+            <p id="celeryLogText" style="font-size:12px">
+                {% if celeryLog %}
+                    {% for line in celeryLog %}
+                        {{ line }}<br>
+                    {% endfor %}
+                {% endif %}
+            </p>
+        </div>
+    </div>
+    <div id="otherLog" class="col-sm-12 col-md-6 col-lg-6">Predicto Log
+        <div style="float:right">
+            <button class="btn btn-sm btn-outline-dark" name="autoRrefreshPredictoLog" value="Auto Refresh" id="autoRrefreshPredictoLog" type="button">Auto Refresh</button>
+        </div>
+        <div style="height:700px; border:1px solid #ccc; overflow:auto; margin-top:1em;">
+            <p id="predictoLogText" style="font-size:12px">
+                {% if predictoLog %}
+                    {% for line in predictoLog %}
+                        {{ line }}<br>
+                    {% endfor %}
+                {% endif %}
+            </p>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var celeryInterval = null;
+    var predictoInterval = null;
+    var celeryButtonState = false;
+    var predictoButtonState = false;
+
+    $("#autoRrefreshCeleryLog").click(function() {
+
+        if (celeryButtonState == false) {
+            $("#autoRrefreshCeleryLog").removeClass("btn-outline-dark");
+            $("#autoRrefreshCeleryLog").addClass("btn-primary");
+            function callAjax(){
+                $("#celeryLogText").load(window.location.href + " #celeryLogText");
+            }
+            celeryInterval = setInterval(callAjax, 5000);
+            celeryButtonState = true;
+        } else {
+            $("#autoRrefreshCeleryLog").removeClass("btn-primary");
+            $("#autoRrefreshCeleryLog").addClass("btn-outline-dark");
+            clearInterval(celeryInterval);
+            celeryButtonState = false;
+        }
+    });
+
+    $("#autoRrefreshPredictoLog").click(function() {
+
+        if (predictoButtonState == false) {
+            $("#autoRrefreshPredictoLog").removeClass("btn-outline-dark");
+            $("#autoRrefreshPredictoLog").addClass("btn-primary");
+            function callAjax(){
+                $("#predictoLogText").load(window.location.href + " #predictoLogText");
+            }
+            predictoInterval = setInterval(callAjax, 5000);
+            predictoButtonState = true;
+        } else {
+            $("#autoRrefreshPredictoLog").removeClass("btn-primary");
+            $("#autoRrefreshPredictoLog").addClass("btn-outline-dark");
+            clearInterval(predictoInterval);
+            predictoButtonState = false;
+        }
+    });
+</script>
+{% endblock %}

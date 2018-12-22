@@ -1,0 +1,13 @@
+.git*
+db_schema.odg
+.~lock.*
+__pycache__
+db-data
+*/migrations/*
+docker-compose*
+Dockerfile*
+*.env
+redis-data
+celerybeat-schedule.db
+*.pid
+*.log
