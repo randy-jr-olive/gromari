@@ -1,7 +1,5 @@
 {% load static from staticfiles %}
 
-{% load custom_tags %}
-
 <!doctype html>
 <html lang="en">
     <head>
@@ -47,26 +45,13 @@
                     <li class="nav-item {% if nbar == 'watchlist' %}active{% endif %}">
                         <a class="nav-link" href="/stocks/watchlist">Watchlist</a>
                     </li>
-                    <li class="nav-item {% if nbar == 'about' %}active{% endif %}">
-                        <a class="nav-link" href="/about">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/stocks/TSX">
-                            {% with blank as total %}
-                                    {% if total|TSXDirection == "1" %}
-                                        <span class="text-success">TSX <b>&uarr;</b></span></a>
-                                    {% else %}
-                                        <span class="text-danger">TSX <b>&darr;</b></span></a>
-                                    {% endif %}
-                            {% endwith %}
-                    </li>
                 </ul>
                 <ul class="navbar-nav navbar-right">
                     <li class="nav-item {% if nbar == 'logs' %}active{% endif %}">
                         <a class="nav-link" href="/logs">Logs</a>
                     </li>
                     <li class="nav-item {% if nbar == 'admin' %}active{% endif %}">
-                        <a class="nav-link" href="/admin_page">Admin</a>
+                        <a class="nav-link" href="/admin">Admin</a>
                     </li>
                 </ul>
             </div>

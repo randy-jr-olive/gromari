@@ -5,40 +5,8 @@
 <!--Loads the humanize library to allow number formats to be human readable-->
 {% load humanize %}
 
-{% load custom_tags %}
-
-{% block title %}Predicto - Home{% endblock %}
+{% block title %}CanGrow - Home{% endblock %}
 
 {% block content%}
-    <div class="row">
-    {% if output %}
-        {% for stock in output|slice:":18" %}
-            <div class="col-md-4 col-lg-2">
-                <div class="card bg-light mb-3">
-                    <span>
-                        <a href="/stocks/{{ stock.symbol }}/" class="card-link text-white"><div class="card-header text-white" style="background-color:#009999;">{{ stock.symbol }}</a>
-                    </span>
-                    <span style="float:right">
-                        {% with stock.symbol as watched %}
-                                {% if watched|isWatched == "1" %}
-                                    <a href="/stocks/watchlist/" data-toggle="tooltip" data-placement="top" title="On Watchlist"><img src="{% static 'img/watched.svg' %}" height="25"></a>
-                                {% endif %}
-                        {% endwith %}
-                    </span>
-                    </div>
-                    <div class="card-body">
-                        <h6 class="card-title">Score: {{ stock.score }}</h6>
-                        <h6 class="card-title">Confidence: {% widthratio stock.confidence 1 100 %}%</h6>
-                        <ul class="list-group list-group-flush" style="font-size:13px">
-                            <li class="list-group-item">Stock Price: ${{ stock.price }}</li>
-                            <li class="list-group-item">Predicted Price: ${{ stock.predicted_price }}</li>
-                            <li class="list-group-item">Trade Cost: ${{ stock.trade_cost|intcomma }}</li>
-                            <li class="list-group-item"># of Shares: {{ stock.num_shares|intcomma }}</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    {% endif %}
-    </div>
+<h1>Hello World</h1>
 {% endblock %}
