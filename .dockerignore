@@ -1,5 +1,4 @@
 .git*
-db_schema.odg
 .~lock.*
 __pycache__
 db-data
