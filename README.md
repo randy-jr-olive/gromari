@@ -1,6 +1,6 @@
-# predicto
+# CanGrow
 
-A Python Django app that scrapes stock data for the Toronto Stock Exchange and places it in an postgresql database, then uses that data to build a machine learning system to predict stock patterns for trading.
+A Python Django app that allows for the management of plant grow rooms. Sensor data is collected and displayed for each grow room. Lights and other connected devices can be controlled through the interface. Plants can be individually named and tracked and a grow log can be used to track watering, fertilization, etc.
 
 ## Getting Started
 
