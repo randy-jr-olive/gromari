@@ -1,0 +1,17 @@
+.sidenav {
+    position: fixed;
+    z-index: 1;
+    top: 70px;
+    right: 10px;
+    overflow-x: hidden;
+    padding: 8px;
+}
+
+.nav-link {
+    text-align: center;
+}
+
+.page-anchor {
+    padding-top: 70px;
+    margin-top: -70px;
+}
