@@ -41,7 +41,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'cangrow.urls'
+ROOT_URLCONF = 'gromari.urls'
 
 TEMPLATES = [
     {
@@ -59,7 +59,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'cangrow.wsgi.application'
+WSGI_APPLICATION = 'gromari.wsgi.application'
 
 
 # Database

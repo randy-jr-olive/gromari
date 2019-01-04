@@ -4,4 +4,4 @@
 FROM nginx:latest
 MAINTAINER Randy Olive <randy.jr.olive@gmail.com>
 
-ADD ./config/nginx/cangrow.conf /etc/nginx/conf.d/
+ADD ./config/nginx/gromari.conf /etc/nginx/conf.d/

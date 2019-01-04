@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Starting CanGrow Deployment"
+echo "Starting gromari Deployment"
 echo "Running migrations:"
 python3 manage.py makemigrations
 python3 manage.py migrate
@@ -9,6 +9,6 @@ echo "Running collect static:"
 python3 manage.py collectstatic --noinput
 echo "done collectstatic"
 echo "Starting celery"
-celery multi start 1 -A cangrow -B -n cangrow --logfile=/code/log/celery/cangrow_worker.log --pidfile=/celery-pidfiles/%n.pid
-echo "Starting CanGrow server"
-gunicorn cangrow.wsgi -b 0.0.0.0:8000 --timeout 300 >> /code/log/cangrow/cangrow.log
+celery multi start 1 -A gromari -B -n gromari --logfile=/code/log/celery/gromari_worker.log --pidfile=/celery-pidfiles/%n.pid
+echo "Starting gromari server"
+gunicorn gromari.wsgi -b 0.0.0.0:8000 --timeout 300 >> /code/log/gromari/gromari.log

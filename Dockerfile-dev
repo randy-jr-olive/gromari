@@ -1,5 +1,5 @@
 # This Dockerfile is used to build an image containing the python
-# app CanGrow, a grow room management tool.
+# app gromari, a grow room management tool.
 
 FROM ubuntu:rolling
 MAINTAINER Randy Olive <randy.jr.olive@gmail.com>
