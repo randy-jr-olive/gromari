@@ -1,0 +1,43 @@
+version: '2'
+
+services:
+  db:
+    image: postgres:11.1
+    restart: always
+    env_file:
+        - postgres-variables.env
+    volumes:
+        - ./db-data:/var/lib/postgresql/data:Z
+  nginx:
+    image: nginx:1.15.7
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./config/nginx:/etc/nginx/conf.d
+      - /static:/static
+    depends_on:
+      - web
+  web:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    restart: always
+    env_file:
+        - web-variables.env
+    command: sh start-api.sh
+    volumes:
+      - .:/code
+      - /static:/static
+    expose:
+      - "8000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      - REDIS_HOST=redis
+  redis:
+    image: redis:5.0.3
+    restart: always
+    volumes:
+      - ./redis-data:/data
