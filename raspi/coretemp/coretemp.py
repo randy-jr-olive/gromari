@@ -8,4 +8,4 @@ def measure_temp():
 while True:
         print(measure_temp())
         print(measure_temp(), file=open("coretemp.txt", "a"))
-time.sleep(10)
+time.sleep(5000)
