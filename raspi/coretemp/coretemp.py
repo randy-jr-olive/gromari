@@ -9,4 +9,4 @@ while True:
         print("getting temp:")
         print(measure_temp())
         print(measure_temp(), file=open("./coretemp/coretemp.value", "w"))
-time.sleep(5000)
+time.sleep(5)
