@@ -40,5 +40,3 @@ RUN apt-get autoremove --purge -y \
 # Set the working directory inside the container
 RUN mkdir /code
 WORKDIR /code
-RUN mkdir -p /code/log/api
-RUN touch /code/log/api/api.log
