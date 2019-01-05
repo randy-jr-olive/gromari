@@ -8,7 +8,7 @@ services:
       - "8000:8000"
     volumes:
       - ./config/nginx:/etc/nginx/conf.d
-      - /static:/static
+      - ./static:/static
     depends_on:
       - web
   web:
@@ -21,7 +21,7 @@ services:
     command: sh start-api.sh
     volumes:
       - .:/code
-      - /static:/static
+      - ./static:/static
     expose:
       - "8000"
     depends_on:
