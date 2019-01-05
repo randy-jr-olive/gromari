@@ -7,5 +7,5 @@ def measure_temp():
 
 while True:
         #print(measure_temp())
-        print(measure_temp(), file=open("/coretemp/coretemp.value", "w"))
+        print(measure_temp(), file=open("./coretemp/coretemp.value", "w"))
 time.sleep(5000)
