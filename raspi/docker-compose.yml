@@ -1,13 +1,6 @@
 version: '2'
 
 services:
-  db:
-    image: postgres:11.1
-    restart: always
-    env_file:
-        - postgres-variables.env
-    volumes:
-        - ./db-data:/var/lib/postgresql/data:Z
   nginx:
     image: nginx:1.15.7
     restart: always
@@ -32,11 +25,9 @@ services:
     expose:
       - "8000"
     depends_on:
-      - db
       - redis
     environment:
       - REDIS_HOST=redis
-    privileged: true
   redis:
     image: redis:5.0.3
     restart: always

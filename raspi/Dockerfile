@@ -19,7 +19,6 @@ RUN apt-get update \
 # Install packages needed for running the app
 RUN apt-get update && apt-get install -y \
     nano \
-    postgresql-client \
     python3 \
     python3-pip
 
@@ -27,7 +26,6 @@ RUN apt-get update && apt-get install -y \
 RUN pip3 install --no-cache-dir\
     django \
     gunicorn \
-    psycopg2-binary \
     redis
 
 # Clean up apt after installations
@@ -41,6 +39,5 @@ RUN apt-get autoremove --purge -y \
 
 # Set the working directory inside the container
 RUN mkdir /code
-run mkdir /celery-pidfiles
 WORKDIR /code
 ADD . /code
