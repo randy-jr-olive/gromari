@@ -6,6 +6,6 @@ def measure_temp():
         return (temp.replace("temp=",""))
 
 while True:
-        print(measure_temp())
+        #print(measure_temp())
         print(measure_temp(), file=open("coretemp.txt", "a"))
 time.sleep(5000)
