@@ -6,5 +6,5 @@ import time
 def enviro(request):
     with open("/code/enviro/enviro.value") as file:
         enviro = file.read()
-    data = {"enviro": enviro)}
+    data = {"enviro": enviro}
     return JsonResponse(data)
