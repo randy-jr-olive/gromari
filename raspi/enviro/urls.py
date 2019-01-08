@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .enviro import views
+import enviro
 
 urlpatterns = [
     path('', views.enviro, name='enviro'),
