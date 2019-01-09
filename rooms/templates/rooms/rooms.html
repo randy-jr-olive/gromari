@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% load static from staticfiles %}
+
+<!--Loads the humanize library to allow number formats to be human readable-->
+{% load humanize %}
+
+{% block title %}gromari - Rooms{% endblock %}
+
+{% block content%}
+<h1>Rooms</h1>
+<h2>Environment:</h2>
+<h3>Temperature: <span id="enviroTemperature"><b>{{ temperature }} &#176;C</b></span></h3>
+<h3>Humidity: <span id="enviroHumidity"><b>{{ humidity }} %</b></span></h3>
+
+<script type="text/javascript">
+$( document ).ready(function() {
+    function callAjax(){
+        $("#enviroTemperature").load(window.location.href + " #enviroTemperature");
+        $("#enviroHumidity").load(window.location.href + " #enviroHumidity");
+    }
+    setInterval(callAjax, 5000);
+});
+</script>
+{% endblock %}
