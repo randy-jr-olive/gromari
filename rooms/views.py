@@ -8,9 +8,8 @@ def getEnviro():
     result = requests.get(URLENVIRO)
     data = json.loads(result.text)
     dataValues = json.loads(data['enviro'])
-    for value in dataValues['enviro']:
-        temperature = value['temperature']
-        humidity = value['humidity']
+    temperature = dataValues['enviro'][0]['temperature']
+    humidity = dataValues['enviro'][0]['humidity']
 
     return temperature, humidity
 
