@@ -1,7 +1,10 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
 
 def getEnviro():
-    import json, requests
+    import json
+    import requests
 
     URLENVIRO = 'http://10.0.1.125:8000/enviro'
 
@@ -13,6 +16,8 @@ def getEnviro():
 
     return temperature, humidity
 
+
+@login_required
 def rooms(request):
 
     temperature, humidity = getEnviro()
