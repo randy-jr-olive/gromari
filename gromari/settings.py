@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rooms',
+    'accounts',
+    'crispy_forms',
     'django_celery_beat',
     'django_celery_results',
 ]
@@ -124,3 +126,8 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
+
+
+# Crispy forms settings
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
