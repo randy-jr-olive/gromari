@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -y \
     python3-pip
 
 # Use pip3 to install python dependencies
-RUN pip3 install --no-cache-dir\
+RUN pip3 install --no-cache-dir \
     BeautifulSoup4 \
     celery \
     django \
@@ -34,6 +34,7 @@ RUN pip3 install --no-cache-dir\
     django-crispy-forms \
     gunicorn \
     lxml \
+    pillow \
     psycopg2-binary \
     redis \
     requests

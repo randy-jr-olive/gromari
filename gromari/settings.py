@@ -131,3 +131,13 @@ CELERY_TIMEZONE = TIME_ZONE
 # Crispy forms settings
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# URLs for authentication system
+
+LOGIN_REDIRECT_URL = 'home'
+LOGIN_URL = 'login'
+
+# Location for storing media files (profile pics, etc)
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
+MEDIA_URL = '/static/media/'
