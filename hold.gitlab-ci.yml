@@ -1,0 +1,30 @@
+# uses a shell runner to build and launch docker images
+# the docker images are created by the docker-compose-dev.yml file in the project
+
+stages:
+  - deploy
+  - cleanup
+
+deploy:
+  stage: deploy
+  retry: 2
+  script:
+    # add the gitlab build number to the version file
+    - echo $CI_BUILD_ID >> version
+    # ssh to docker server to setup deployment
+    - ssh root@10.0.1.210 "mkdir -p /tmp/gromari"
+    - scp -r ./* root@10.0.1.210:/tmp/gromari
+    - ssh root@10.0.1.210 "cd /tmp/gromari && docker-compose -f docker-compose-dev.yml down"
+    - ssh root@10.0.1.210 "cd /tmp/gromari && docker-compose -f docker-compose-dev.yml build --no-cache"
+    - ssh root@10.0.1.210 "cd /tmp/gromari && docker-compose -f docker-compose-dev.yml up -d --force-recreate"
+  tags:
+    - shell # tag used for selection of build runner
+
+cleaup:
+  stage: cleanup
+  retry: 2
+  script:
+    # remove the build dir from the server
+    - ssh root@10.0.1.210 "rm -rf /tmp/gromari"
+  tags:
+    - shell # tag used for selection of build runner

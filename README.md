@@ -1,6 +1,6 @@
 # gromari
 
-A Python Django app that allows for the management of plant grow rooms. Sensor data is collected and displayed for each grow room. Lights and other connected devices can be controlled through the interface. Plants can be individually named and tracked and a grow log can be used to track watering, fertilization, etc.
+A Python Django app that allows for the management of plant grow rooms. Each room has a list of plants and equipment contained within. A journal system is available to track plant progress, watering, fertilization, etc.
 
 ## Getting Started
 
