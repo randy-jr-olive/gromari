@@ -1,34 +1,43 @@
-version: '2'
+version: '3.5'
 
 services:
   db:
     image: postgres:11.1
+    container_name: gromari-postgres
     restart: always
     env_file:
         - postgres-variables-dev.env
     volumes:
-        - ./db-data:/var/lib/postgresql/data:Z
+        - gromari-data:/var/lib/postgresql/data:Z
   nginx:
-    image: nginx:1.15.7
+    build:
+        context: .
+        dockerfile: Dockerfile-nginx
+    container_name: gromari-nginx
     restart: always
+    links:
+      - web:web
     ports:
       - "8001:8000"
     volumes:
-      - ./config/nginx:/etc/nginx/conf.d
-      - /static:/static
+      - gromari-static:/static
+      - gromari-mediafiles:/mediafiles
     depends_on:
       - web
   web:
     build:
         context: .
         dockerfile: Dockerfile-dev
+    container_name: gromari-web
     restart: always
     env_file:
         - web-variables-dev.env
     command: sh start-dev.sh
     volumes:
-      - .:/code
-      - /static:/static
+      - gromari-static:/code/static
+      - gromari-mediafiles:/code/mediafiles
+      - gromari-accounts-migrations:/code/accounts/migrations
+      - gromari-rooms-migrations:/code/rooms/migrations
     expose:
       - "8000"
     depends_on:
@@ -38,6 +47,27 @@ services:
       - REDIS_HOST=redis
   redis:
     image: redis:5.0.3
+    container_name: gromari-redis
     restart: always
     volumes:
-      - ./redis-data:/data
+      - gromari-redis-data:/data
+
+volumes:
+    gromari-accounts-migrations:
+        name: gromari-accounts-migrations
+        driver: local
+    gromari-data:
+        name: gromari-data
+        driver: local
+    gromari-mediafiles:
+        name: gromari-mediafiles
+        driver: local
+    gromari-redis-data:
+        name: gromari-redis-data
+        driver: local
+    gromari-rooms-migrations:
+        name: gromari-rooms-migrations
+        driver: local
+    gromari-static:
+        name: gromari-static
+        driver: local
