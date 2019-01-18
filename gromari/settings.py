@@ -139,5 +139,5 @@ LOGIN_URL = 'login'
 
 # Location for storing media files (profile pics, etc)
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
-MEDIA_URL = '/static/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+MEDIA_URL = '/mediafiles/'
