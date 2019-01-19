@@ -7,7 +7,8 @@ class Room(models.Model):
 
     name = models.CharField(max_length=200)
     description = models.TextField()
-    lightCycle = models.IntegerField(default=18)
+    lightsOn = models.IntegerField(default=0)
+    lightsOff = models.IntegerField(default=1)
 
     class Meta:
         # Sets the plural form for display in the django admin app
