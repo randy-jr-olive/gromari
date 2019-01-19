@@ -18,7 +18,5 @@ echo "Starting supervisor"
 service supervisor start
 supervisorctl reread
 supervisorctl update
-#echo "Starting celery"
-#celery multi start 1 -A gromari -B -n gromari --logfile=/code/log/celery/gromari_worker.log --pidfile=/celery-pidfiles/%n.pid
 echo "Starting gromari server"
 gunicorn gromari.wsgi -b 0.0.0.0:8000 --timeout 300 >> /code/log/gromari/gromari.log
