@@ -2,8 +2,21 @@
 # the docker images are created by the docker-compose-dev.yml file in the project
 
 stages:
+  - test
   - deploy
   - cleanup
+
+test:
+  # builds a local copy of the app on the gitlab server to run tests before
+  # deploying to production environment
+  stage: test
+  script:
+    - docker-compose -f docker-compose.yml build --no-cache
+    - docker-compose -f docker-compose.yml up -d --force-recreate
+    - docker exec gromari-web python3 manage.py test --noinput
+    - docker-compose -f docker-compose.yml down
+  tags:
+    - shell # tag used for selection of build runner
 
 deploy:
   stage: deploy
