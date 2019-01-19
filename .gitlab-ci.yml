@@ -14,9 +14,9 @@ deploy:
     # ssh to docker server to setup deployment
     - ssh root@10.0.1.210 "mkdir -p /tmp/gromari"
     - scp -r ./* root@10.0.1.210:/tmp/gromari
-    - ssh root@10.0.1.210 "cd /tmp/gromari && docker-compose -f docker-compose-dev.yml down"
-    - ssh root@10.0.1.210 "cd /tmp/gromari && docker-compose -f docker-compose-dev.yml build --no-cache"
-    - ssh root@10.0.1.210 "cd /tmp/gromari && docker-compose -f docker-compose-dev.yml up -d --force-recreate"
+    - ssh root@10.0.1.210 "cd /tmp/gromari && docker-compose -f docker-compose.yml down"
+    - ssh root@10.0.1.210 "cd /tmp/gromari && docker-compose -f docker-compose.yml build --no-cache"
+    - ssh root@10.0.1.210 "cd /tmp/gromari && docker-compose -f docker-compose.yml up -d --force-recreate"
   tags:
     - shell # tag used for selection of build runner
 

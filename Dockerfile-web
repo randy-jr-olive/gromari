@@ -18,26 +18,21 @@ RUN apt-get update \
 
 # Install packages needed for running the app
 RUN apt-get update && apt-get install -y \
+    libcairo2-dev \
     libxml2-dev \
     nano \
     postgresql-client \
     python3 \
-    python3-pip
+    python3-pip \
+    supervisor
 
-# Use pip3 to install python dependencies
-RUN pip3 install --no-cache-dir \
-    BeautifulSoup4 \
-    celery \
-    django \
-    django-celery-beat \
-    django-celery-results \
-    django-crispy-forms \
-    gunicorn \
-    lxml \
-    pillow \
-    psycopg2-binary \
-    redis \
-    requests
+# Set the working directory inside the container
+RUN mkdir /code
+WORKDIR /code
+ADD . /code
+
+# Use pip3 to install python dependencies from requirements.txt
+RUN pip3 install -r requirements.txt --no-cache-dir
 
 # Clean up apt after installations
 RUN apt-get autoremove --purge -y \
@@ -48,8 +43,12 @@ RUN apt-get autoremove --purge -y \
     && echo "removing apt cache" \
     && rm -rf /var/cache/apt/archives/*
 
-# Set the working directory inside the container
-RUN mkdir /code
-run mkdir /celery-pidfiles
-WORKDIR /code
-ADD . /code
+# setup directories and log files for supervisor
+ADD ./config/supervisor/gromari_celery.conf /etc/supervisor/conf.d/
+ADD ./config/supervisor/gromari_celerybeat.conf /etc/supervisor/conf.d/
+RUN mkdir -p /code/log/celery/
+RUN touch /code/log/celery/gromari_worker.log
+RUN touch /code/log/celery/gromari_beat.log
+
+RUN mkdir -p /code/log/gromari/
+RUN touch /code/log/gromari/gromari.log

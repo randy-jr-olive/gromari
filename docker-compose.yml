@@ -5,6 +5,7 @@ services:
     image: postgres:11.1
     container_name: gromari-postgres
     restart: always
+    network_mode: bridge
     env_file:
         - postgres-variables-dev.env
     volumes:
@@ -15,6 +16,7 @@ services:
         dockerfile: Dockerfile-nginx
     container_name: gromari-nginx
     restart: always
+    network_mode: bridge
     links:
       - web:web
     ports:
@@ -27,15 +29,18 @@ services:
   web:
     build:
         context: .
-        dockerfile: Dockerfile-dev
+        dockerfile: Dockerfile-web
     container_name: gromari-web
     restart: always
+    network_mode: bridge
+    links:
+      - db
     env_file:
         - web-variables-dev.env
-    command: sh start-dev.sh
+    command: sh start.sh
     volumes:
-      - gromari-static:/code/static
-      - gromari-mediafiles:/code/mediafiles
+      - gromari-static:/static
+      - gromari-mediafiles:/mediafiles
       - gromari-accounts-migrations:/code/accounts/migrations
       - gromari-rooms-migrations:/code/rooms/migrations
     expose:
@@ -49,6 +54,7 @@ services:
     image: redis:5.0.3
     container_name: gromari-redis
     restart: always
+    network_mode: bridge
     volumes:
       - gromari-redis-data:/data
 
