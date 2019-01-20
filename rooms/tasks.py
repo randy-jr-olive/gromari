@@ -53,10 +53,9 @@ def createEnviroReadingTask(roomID):
 
 # CRONTAB periodic tasks
 
-@periodic_task(run_every=(crontab(minute='*/5')), name="periodicCreateEnviroReadingTask", ignore_result=True)
+@periodic_task(run_every=(crontab(minute='*/1')), name="periodicCreateEnviroReadingTask", ignore_result=True)
 def periodicCreateEnviroReadingTask():
     from rooms.models import Room
     rooms = Room.objects.all()
-    print("cron get sensor reading")
     for room in rooms:
         createEnviroReadingTask.delay(room.id)
