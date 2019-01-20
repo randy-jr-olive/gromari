@@ -19,6 +19,10 @@ class Room(models.Model):
         # django admin page
         return self.name
 
+    def getRooms(self):
+        # returns a queryset of all rooms
+        return Room.objects.all()
+
 
 class Plant(models.Model):
     # Model of information related to an individual plant in a room
@@ -53,7 +57,7 @@ class Tag(models.Model):
     def __str__(self):
         # Sets the string that is returned on the list for this model on the
         # django admin page
-        return self.name
+        return self.text
 
 
 class Journal(models.Model):
@@ -72,7 +76,7 @@ class Journal(models.Model):
     def __str__(self):
         # Sets the string that is returned on the list for this model on the
         # django admin page
-        return self.name
+        return str(self.dateCreated)
 
 
 class Equipment(models.Model):
@@ -91,7 +95,7 @@ class Equipment(models.Model):
     def __str__(self):
         # Sets the string that is returned on the list for this model on the
         # django admin page
-        return self.name
+        return self.type
 
 
 class SensorData(models.Model):
@@ -113,4 +117,8 @@ class SensorData(models.Model):
     def __str__(self):
         # Sets the string that is returned on the list for this model on the
         # django admin page
-        return self.name
+        return str(self.timestamp)
+
+    def createReading(self, room):
+        from rooms.tasks import createEnviroReadingTask
+        createEnviroReadingTask.delay(room)
