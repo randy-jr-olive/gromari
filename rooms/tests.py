@@ -32,3 +32,9 @@ class RoomTests(TestCase):
 
         found = resolve(reverse('rooms'))
         self.assertEqual(found.func, rooms)
+
+    def testResponseContainsCorrectText(self):
+
+        login = self.client.login(username='testuser', password='12345')
+        response = self.client.get(reverse('rooms'))
+        self.assertContains(response, "<title>gromari - Rooms</title>")
