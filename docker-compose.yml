@@ -35,6 +35,7 @@ services:
     network_mode: bridge
     links:
       - db
+      - redis
     env_file:
         - web-variables-dev.env
     command: sh start.sh
