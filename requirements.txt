@@ -22,6 +22,8 @@ Pillow==5.4.1
 psycopg2-binary==2.7.6.1
 pycrypto==2.6.1
 PyGObject==3.30.1
+pytest-cov==2.6.1
+pytest-django==3.4.5
 python-crontab==2.3.6
 python-dateutil==2.7.5
 pytz==2018.9

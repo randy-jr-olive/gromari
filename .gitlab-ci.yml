@@ -14,6 +14,7 @@ test:
     - docker-compose -f docker-compose.yml build --no-cache
     - docker-compose -f docker-compose.yml up -d --force-recreate
     - docker exec gromari-web python3 manage.py test --noinput
+    - docker exec gromari-web py.test --cov=rooms */tests.py
     - docker-compose -f docker-compose.yml down
   tags:
     - shell # tag used for selection of build runner
