@@ -23,6 +23,10 @@ class Room(models.Model):
         # returns a queryset of all rooms
         return Room.objects.all()
 
+    def getRoom(self, room):
+        # returns a single room
+        return Room.objects.get(pk=room)
+
 
 class Plant(models.Model):
     # Model of information related to an individual plant in a room
@@ -119,6 +123,9 @@ class SensorData(models.Model):
         # django admin page
         return str(self.timestamp)
 
-    def createReading(self, room):
-        from rooms.tasks import createEnviroReadingTask
-        createEnviroReadingTask.delay(room)
+    def getLatestReading(self, roomID):
+        latestReading = SensorData.objects.filter(room_fk=roomID).latest('timestamp')
+        temperature = latestReading.temperature
+        humidity = latestReading.humidity
+
+        return temperature, humidity
