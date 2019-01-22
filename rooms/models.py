@@ -9,6 +9,7 @@ class Room(models.Model):
     description = models.TextField()
     lightsOn = models.IntegerField(default=0)
     lightsOff = models.IntegerField(default=1)
+    activeSensor = models.BooleanField(default=False)
 
     class Meta:
         # Sets the plural form for display in the django admin app
