@@ -28,8 +28,8 @@
         {% block head %}{% endblock %}
     </head>
 
-    <body style="background-color: #d6d6d6">
-        <div id="nav" class="navbar navbar-expand-md navbar-light py-1 mb-4 fixed-top" style="background-color: #7fcc2b;">
+    <body style="background-color: #d5ffd6">
+        <div id="nav" class="navbar navbar-expand-md navbar-light bg-white border-bottom border-dark py-1 mb-4 fixed-top">
             <a class="navbar-brand" href="{% url 'rooms' %}"><img src="{% static 'img/icon-circle-white.png' %}" height="30"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -66,7 +66,7 @@
             </div>
         </div>
 
-        <div class="wrapper container-fluid" style="padding: 10px 10px 10px 10px; margin: 0 auto; width: 95%; border-radius: 3px; border: 2px solid #7fcc2b; background-color: #fff;">
+        <div class="wrapper container-fluid border-dark" style="padding: 10px 10px 10px 10px; margin: 0 auto; width: 95%; border-radius: 3px; border: 1px solid; background-color: #fff;">
             <div id="message" class="alert alert-info collapse" role="alert"></div>
             {% block content %}
             {% endblock %}
