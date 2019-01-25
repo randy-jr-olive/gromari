@@ -28,26 +28,28 @@
         {% block head %}{% endblock %}
     </head>
 
-    <body>
-        <div id="nav" class="navbar navbar-expand-md navbar-dark bg-dark mb-4 fixed-top">
-            <a class="navbar-brand" href="/"><img src="{% static 'img/icon-circle-white.png' %}" height="30"></a>
+    <body style="background-color: #d6d6d6">
+        <div id="nav" class="navbar navbar-expand-md navbar-light py-1 mb-4 fixed-top" style="background-color: #7fcc2b;">
+            <a class="navbar-brand" href="{% url 'rooms' %}"><img src="{% static 'img/icon-circle-white.png' %}" height="30"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item {% if nbar == 'home' %}active{% endif %}">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
                     <li class="nav-item {% if nbar == 'rooms' %}active{% endif %}">
-                        <a class="nav-link" href="/rooms">Grow Rooms</a>
+                        <a class="nav-link" href="{% url 'rooms' %}">gromari</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav navbar-right">
                     {% if user.is_authenticated %}
                     <li class="nav-item {% if nbar == 'profile' %}active{% endif %}">
-                        <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                        <a class="nav-link" href="{% url 'profile' %}">{{ user.get_short_name }}'s Profile</a>
                     </li>
+                        {% if user.is_superuser %}
+                        <li class="nav-item {% if nbar == 'admin' %}active{% endif %}">
+                            <a class="nav-link" href="/admin">Admin</a>
+                        </li>
+                        {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                     </li>
@@ -59,19 +61,17 @@
                         <a class="nav-link" href="{% url 'register' %}">Register</a>
                     </li>
                     {% endif %}
-                    </li>
-                    <li class="nav-item {% if nbar == 'admin' %}active{% endif %}">
-                        <a class="nav-link" href="/admin">Admin</a>
-                    </li>
                 </ul>
+
             </div>
         </div>
 
-        <div class="wrapper container-fluid" style="position: absolute; top: 70px;">
+        <div class="wrapper container-fluid" style="padding: 10px 10px 10px 10px; margin: 0 auto; width: 95%; border-radius: 5px; border: 2px solid #7fcc2b; background-color: #fff;">
             <div id="message" class="alert alert-info collapse" role="alert"></div>
             {% block content %}
             {% endblock %}
         </div>
+
 
         <!-- Bootstrap core JavaScript -->
         <!-- Placed at the end of the document so the pages load faster -->

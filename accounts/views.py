@@ -11,11 +11,16 @@ def register(request):
             form.save()
             username = form.cleaned_data.get('username')
             messages.success(request, f'Account created for {username}!')
-            return redirect('home')
+            return redirect('rooms')
     else:
         form = UserRegisterForm()
 
-    return render(request, 'accounts/register.html', {'form': form})
+    context = {
+        'form': form,
+        'nbar': 'register'
+    }
+
+    return render(request, 'accounts/register.html', context)
 
 
 @login_required
@@ -36,7 +41,8 @@ def profile(request):
 
     context = {
         'u_form': u_form,
-        'p_form': p_form
+        'p_form': p_form,
+        'nbar': 'profile'
     }
 
     return render(request, 'accounts/profile.html', context)

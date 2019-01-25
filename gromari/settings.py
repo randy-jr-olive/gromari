@@ -134,7 +134,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # URLs for authentication system
 
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'rooms'
 LOGIN_URL = 'login'
 
 # Location for storing media files (profile pics, etc)
