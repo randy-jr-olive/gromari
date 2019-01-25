@@ -12,8 +12,10 @@
   <div class="media">
     <img class="rounded-circle account-img" src="{{ user.profile.image.url }}" height="65">
     <div class="media-body">
-      <h2 class="account-heading">{{ user.username }}, {{ user.get_full_name }}, {{ user.get_short_name }}</h2>
-      <p class="text-secondary">{{ user.email }}</p>
+        <h2 class="account-heading">{{ user.username }}</h2>
+        <p class="text-secondary">{{ user.get_full_name }}</p>
+        <p class="text-secondary">{{ user.email }}</p>
+
     </div>
   </div>
     <form method="POST" enctype="multipart/form-data">
