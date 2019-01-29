@@ -59,3 +59,11 @@ def periodicCreateEnviroReadingTask():
     rooms = Room.objects.all()
     for room in rooms:
         createEnviroReadingTask.delay(room.id)
+
+@periodic_task(run_every=(crontab(minute='*/30')), name="periodicDeleteOldSensorDataTask", ignore_result=True)
+def periodicDeleteOldSensorDataTask():
+    from datetime import timedelta
+    from django.utils import timezone
+    from rooms.models import SensorData
+
+    results = SensorData.objects.filter(timestamp__lt=timezone.now()-timedelta(days=1)).delete()
