@@ -41,9 +41,15 @@ def createEnviroReadingTask(roomID):
         # get room object from roomID
         room = Room.objects.get(pk=roomID)
 
+        room.currentTemperature = temperature
+        room.currentHumidity = humidity
+
+        room.save()
+
         reading = SensorData(temperature=temperature,
                              humidity=humidity, room_fk=room)
         reading.save()
+
 
     finally:
         connection.close()
@@ -56,7 +62,7 @@ def createEnviroReadingTask(roomID):
 @periodic_task(run_every=(crontab(minute='*/1')), name="periodicCreateEnviroReadingTask", ignore_result=True)
 def periodicCreateEnviroReadingTask():
     from rooms.models import Room
-    rooms = Room.objects.all()
+    rooms = Room.objects.filter(activeSensor=True)
     for room in rooms:
         createEnviroReadingTask.delay(room.id)
 
