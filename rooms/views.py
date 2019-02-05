@@ -45,12 +45,12 @@ def rooms(request):
 
 
 @login_required
-def roomDetails(request, id=-1):
+def roomDetails(request, room_id):
     if request.method == 'POST':
-        if id == -1:
+        if room_id == 0:
             roomForm = RoomForm(request.POST)
         else:
-            room = Room.objects.get(pk=id)
+            room = Room.objects.get(pk=room_id)
             roomForm = RoomForm(request.POST, instance=room)
 
         if roomForm.is_valid():
@@ -58,10 +58,10 @@ def roomDetails(request, id=-1):
             return redirect('rooms')
 
     else:
-        if id == -1:
+        if room_id == 0:
             roomForm = RoomForm()
         else:
-            room = Room.objects.get(pk=id)
+            room = Room.objects.get(pk=room_id)
             roomForm = RoomForm(instance=room)
 
     context = {
@@ -73,11 +73,11 @@ def roomDetails(request, id=-1):
 
 
 @login_required
-def deleteRoom(request, id):
+def deleteRoom(request, room_id):
     if request.method == 'POST':
         confirmed = request.POST.get('confirmed')
         if confirmed == 'true':
-            room = Room.objects.filter(pk=id).delete()
+            room = Room.objects.filter(pk=room_id).delete()
         else:
             print("not confirmed")
         return redirect('rooms')
@@ -86,12 +86,12 @@ def deleteRoom(request, id):
 
 
 @login_required
-def plantDetails(request, id=-1):
+def plantDetails(request, room_id, plant_id):
     if request.method == 'POST':
-        if id == -1:
-            plantForm = PlantForm(request.POST)
+        if plant_id == 0:
+            plantForm = PlantForm(request.POST, initial={'room_fk': room_id})
         else:
-            plant = Plant.objects.get(pk=id)
+            plant = Plant.objects.get(pk=plant_id)
             plantForm = PlantForm(request.POST, instance=plant)
 
         if plantForm.is_valid():
@@ -99,10 +99,10 @@ def plantDetails(request, id=-1):
             return redirect('rooms')
 
     else:
-        if id == -1:
-            plantForm = PlantForm()
+        if plant_id == 0:
+            plantForm = PlantForm(initial={'room_fk': room_id})
         else:
-            plant = Plant.objects.get(pk=id)
+            plant = Plant.objects.get(pk=plant_id)
             plantForm = PlantForm(instance=plant)
 
     context = {
@@ -114,11 +114,11 @@ def plantDetails(request, id=-1):
 
 
 @login_required
-def deletePlant(request, id):
+def deletePlant(request, plant_id):
     if request.method == 'POST':
         confirmed = request.POST.get('confirmed')
         if confirmed == 'true':
-            plant = Plant.objects.filter(pk=id).delete()
+            plant = Plant.objects.filter(pk=plant_id).delete()
         else:
             print("not confirmed")
         return redirect('rooms')

@@ -13,7 +13,7 @@
     <script src="{% static 'js/Chart.bundle.js' %}"></script>
 
 <div class="pb-2 text-center">
-    <a class="text-dark" href="{% url 'roomDetails' %}">
+    <a class="text-dark" href="{% url 'roomDetails' 0 %}">
         <img src="{% static 'img/add-new.png' %}" height="20px"><span class="pl-1">Add Room</span>
     </a>
 </div>
@@ -78,7 +78,7 @@
                             </li>
                             <p class="mt-1 p-1 h6 text-center">Plants</p>
                             <div class="text-center">
-                                <a class="text-dark" href="{% url 'plantDetails' %}">
+                                <a class="text-dark" href="{% url 'plantDetails' room.id 0 %}">
                                     <img src="{% static 'img/add-new.png' %}" height="20px"><span class="pl-1">Add Plant</span>
                                 </a>
                             </div>
@@ -88,7 +88,7 @@
                                     <div class="mr-auto p-1 col-12 col-sm-12 col-md-4">
                                         <div class="mb-1" style="font-size:15px;"><b>{{ plant.name }}</b></div>
                                         <div class="row p-2">
-                                            <div class="pr-2"><a class="p-1 col-auto text-dark" href="{% url 'plantDetails' plant.id %}"><img src="{% static 'img/edit.png' %}" height="14px"><span class="p-1">Edit</span></a></div>
+                                            <div class="pr-2"><a class="p-1 col-auto text-dark" href="{% url 'plantDetails' room.id plant.id %}"><img src="{% static 'img/edit.png' %}" height="14px"><span class="p-1">Edit</span></a></div>
                                             <div><a class="col-auto text-dark" data-toggle="modal" data-target="#modalDeletePlant{{ plant.id }}" href=""><img src="{% static 'img/delete.png' %}" height="14px"><span class="p-1">Delete</span></a></div>
                                         </div>
                                         <div><b>Species:</b> {{ plant.species }}</div>

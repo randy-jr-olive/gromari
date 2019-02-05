@@ -18,6 +18,6 @@ class PlantForm(forms.ModelForm):
 
     name = forms.CharField(max_length=200, label="Plant Name")
     species = forms.CharField(max_length=200, label="Species")
-    description = forms.CharField(label="Description")
+    description = forms.CharField(label="Description", widget=forms.Textarea)
     datePlanted = forms.DateTimeField(label="Date Planted")
     room_fk = forms.ModelChoiceField(queryset=Room.objects.all(), label="Room")
