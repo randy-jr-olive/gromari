@@ -8,18 +8,370 @@
 {% block title %}gromari - Rooms{% endblock %}
 
 {% block content%}
-<h1>Rooms</h1>
-<h2>Environment:</h2>
-<h3>Temperature: <span id="enviroTemperature"><b>{{ temperature }} &#176;C</b></span></h3>
-<h3>Humidity: <span id="enviroHumidity"><b>{{ humidity }} %</b></span></h3>
 
-<script type="text/javascript">
-$( document ).ready(function() {
-    function callAjax(){
-        $("#enviroTemperature").load(window.location.href + " #enviroTemperature");
-        $("#enviroHumidity").load(window.location.href + " #enviroHumidity");
-    }
-    setInterval(callAjax, 10000);
-});
-</script>
+<!-- Load Chart.js bundle -->
+    <script src="{% static 'js/Chart.bundle.js' %}"></script>
+
+<div class="pb-2 text-center">
+    <a class="text-dark" href="{% url 'roomDetails' %}">
+        <img src="{% static 'img/add-new.png' %}" height="20px"><span class="pl-1">Add Room</span>
+    </a>
+</div>
+{% if roomList %}
+    {% for room in roomList %}
+    <div id="roomContainer" class="container-fluid">
+        <div class="row">
+            <div id="{{ room.id }}" class="page-anchor col-sm-12 col-md-12 col-lg-12">
+                <div class="card bg-light">
+                    <div class="card-header text-white p-1" style="background-color:#439900; font-size:15px;">
+                        <div class="d-flex">
+                            <div class="mr-auto p-1">
+                                <span><b>{{ room.name }}</b></span>
+                            </div>
+                            {% if room.activeSensor == True %}
+                                <div class="p-1">
+                                Temperature: <span id="roomCurrentTemperature{{ room.id }}"><b>{{ room.currentTemperature }}&#176;C</b></span>
+                                </div>
+                                <div class="p-1">
+                                Humidity: <span id="roomCurrentHumidity{{ room.id }}"><b>{{ room.currentHumidity }}%</b></span>
+                                </div>
+                            {% else %}
+                                <div class="p-1">
+                                <em>No Active Sensor</em>
+                                </div>
+                            {% endif %}
+                            <div class="p-1 ml-3">
+                            <a data-toggle="collapse" data-target="#roomDetails{{ room.id }}" aria-expanded="false" aria-controls="roomDetails{{ room.id }}">
+                                <img id="expandToggle{{ room.id }}" src="{% static 'img/arrow-dropdown.png' %}" height="18px">
+                            </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body collapse multi-collapse p-1" id="roomDetails{{ room.id }}">
+                        <ul class="list-group list-group-flush" style="font-size:13px">
+                            <div class="row pb-1">
+                                <div><a class="col-auto text-dark" href="{% url 'roomDetails' room.id %}"><img src="{% static 'img/edit.png' %}" height="14px"><span class="p-1">Edit</span></a></div>
+                                <div><a class="col-auto text-dark" data-toggle="modal" data-target="#modalDeleteRoom{{ room.id }}" href=""><img src="{% static 'img/delete.png' %}" height="14px"><span class="p-1">Delete</span></a></div>
+                            </div>
+                            <li class="list-group-item">
+                                <div class="d-flex row">
+                                    <div class="mr-auto p-1 col-12 col-sm-12 col-md-2">
+                                        <div><b>Plants:</b> {{ room.plantCount }}</div>
+                                        <div><b>Light Cycle</b></div>
+                                        <div>{{ room.lightsOn }} hours on</div>
+                                        <div>{{ room.lightsOff }} hours off</div>
+                                        <div class="mt-2"><b>Description</b></div>
+                                        <div>{{ room.description }}</div>
+
+                                    </div>
+                                    {% if room.activeSensor == True %}
+                                        <div class="p-1 col-12 col-sm-12 col-md-5" height="300px">
+                                            <canvas id="temperatureChart{{ room.id }}"></canvas>
+                                        </div>
+                                        <div class="p-1 col-12 col-sm-12 col-md-5" height="300px">
+                                            <canvas id="humidityChart{{ room.id }}"></canvas>
+                                        </div>
+                                    {% else %}
+                                        <div><em>No Active Sensor</em></div>
+                                    {% endif %}
+                                </div>
+                            </li>
+                            <p class="mt-1 p-1 h6 text-center">Plants</p>
+                            <div class="text-center">
+                                <a class="text-dark" href="{% url 'plantDetails' %}">
+                                    <img src="{% static 'img/add-new.png' %}" height="20px"><span class="pl-1">Add Plant</span>
+                                </a>
+                            </div>
+                            {% for plant in room.plants %}
+                            <li class="list-group-item">
+                                <div class="d-flex row">
+                                    <div class="mr-auto p-1 col-12 col-sm-12 col-md-4">
+                                        <div class="mb-1" style="font-size:15px;"><b>{{ plant.name }}</b></div>
+                                        <div class="row p-2">
+                                            <div class="pr-2"><a class="p-1 col-auto text-dark" href="{% url 'plantDetails' plant.id %}"><img src="{% static 'img/edit.png' %}" height="14px"><span class="p-1">Edit</span></a></div>
+                                            <div><a class="col-auto text-dark" data-toggle="modal" data-target="#modalDeletePlant{{ plant.id }}" href=""><img src="{% static 'img/delete.png' %}" height="14px"><span class="p-1">Delete</span></a></div>
+                                        </div>
+                                        <div><b>Species:</b> {{ plant.species }}</div>
+                                        <div><b>Date Planted:</b> {{ plant.datePlanted|date:"d b Y" }}</div>
+                                        <div><b>Age:</b> {{ plant.datePlanted|timesince }}</div>
+                                    </div>
+                                    <div class="p-1 col-12 col-sm-12 col-md-8">
+                                        <div><b>Description</b></div>
+                                        <div>{{ plant.description }}</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <!-- Modal delete plant -->
+                            <div class="modal fade" id="modalDeletePlant{{ plant.id }}" tabindex="-1" role="dialog" aria-labelledby="modelDeletePlantTitle{{ plant.id }}" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modelDeletePlantTitle{{ plant.id }}">Delete {{ plant.name }}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to delete {{ plant.name }}?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            <button id="deletePlantConfirm{{ plant.id }}" type="button" class="btn btn-danger">Delete</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <script type="text/javascript">
+                            // controls the modal for deleting a plant and fires the POST request to
+                            // execute the delete command on the server
+                            $("#deletePlantConfirm{{ plant.id }}").click(function() {
+
+                                $.ajax({
+                                    url : "{% url 'deletePlant' plant.id %}",
+                                    type: "POST",
+                                    data : {csrfmiddlewaretoken: '{{ csrf_token }}', confirmed: 'true'},
+                                    success: function(data){
+                                        $('#modalDeletePlant{{ plant.id }}').modal('hide');
+                                        location.reload();
+                                    }
+                                });
+                            });
+                            </script>
+
+                            {% endfor %}
+                            <p class='mt-1 p-1 text-center h6'>Journal Entries</p>
+                            <div class="text-center">
+                                <a class="text-dark" href="#">
+                                    <img src="{% static 'img/add-new.png' %}" height="20px"><span class="pl-1">Add Journal Entry</span>
+                                </a>
+                            </div>
+                            <li class="list-group-item">
+                                <div class="d-flex row">
+                                    <div class="container-fluid" id="journalEntries{{ room.id }}">
+                                        <table class="table table-striped table-hover table-bordered table-sm" style="font-size:13px">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center">Date</th>
+                                                    <th class="text-center">Author</th>
+                                                    <th class="text-center">Entry</th>
+                                                    <th class="text-center">Tags</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for entry in room.journalEntries %}
+                                                    <tr>
+                                                        <td><a href="#">{{ entry.dateUpdated|date:"d b Y" }}</a></td>
+                                                        <td>{{ entry.author.get_full_name }}</td>
+                                                        <td>{{ entry.text }}</td>
+                                                        <td>
+                                                        {% for tag in entry.tags.all %}
+                                                            <a href="#">{{ tag }}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        {% endfor %}
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <!-- Modal delete room -->
+    <div class="modal fade" id="modalDeleteRoom{{ room.id }}" tabindex="-1" role="dialog" aria-labelledby="modelDeleteRoomTitle{{ room.id }}" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modelDeleteRoomTitle{{ room.id }}">Delete {{ room.name }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete {{ room.name }}?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button id="deleteRoomConfirm{{ room.id }}" type="button" class="btn btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    // controls the modal for deleting a room and fires the POST request to
+    // execute the delete command on the server
+    $("#deleteRoomConfirm{{ room.id }}").click(function() {
+        function roomsReload(){
+            $('#modalDeleteRoom{{ room.id }}').modal('hide');
+            location.reload();
+        }
+
+        $.ajax({
+            url : "{% url 'deleteRoom' room.id %}",
+            type: "POST",
+            data : {csrfmiddlewaretoken: '{{ csrf_token }}', confirmed: 'true'},
+            success: function(data){
+                roomsReload();
+            }
+        });
+    });
+    </script>
+
+    <script type="text/javascript">
+    $( document ).ready(function() {
+        function callAjax(){
+            $("#roomCurrentTemperature{{ room.id }}").load(window.location.href + " #roomCurrentTemperature{{ room.id }}");
+            $("#roomCurrentHumidity{{ room.id }}").load(window.location.href + " #roomCurrentHumidity{{ room.id }}");
+        }
+        setInterval(callAjax, 10000);
+    });
+    </script>
+
+    <script type="text/javascript">
+    var isToggled{{ room.id }} = false;
+
+    $("#expandToggle{{ room.id }}").click(function() {
+
+        var arrowDownSrc = "{% static 'img/arrow-dropdown.png' %}"
+        var arrowUpSrc = "{% static 'img/arrow-pullup.png' %}"
+
+            if(isToggled{{ room.id }} == false) {
+                $('#expandToggle{{ room.id }}').attr('src',arrowUpSrc);
+                isToggled{{ room.id }} = true;
+            } else {
+                $('#expandToggle{{ room.id }}').attr('src',arrowDownSrc);
+                isToggled{{ room.id }} = false;
+            }
+    });
+    </script>
+
+    {% if room.activeSensor == True %}
+    <script type="text/javascript">
+    $( document ).ready(function() {
+        var temperatureChartContext = document.getElementById('temperatureChart{{ room.id }}').getContext("2d");
+        var temperatureHistory = JSON.parse('{{ room.temperatureHistory|safe }}');
+
+        // reverses the order of the array to get the graph to show time from
+        // left to right
+        temperatureHistory.reverse();
+
+        var total = 0;
+        for(var i = 0; i < temperatureHistory.length; i++) {
+            total += parseInt(temperatureHistory[i]);
+        }
+
+        var averageTemperature = Math.round(total / temperatureHistory.length);
+        var maxTemperatureScale = averageTemperature + 2;
+        var minTemperatureScale = averageTemperature - 2;
+
+        var temperatureChart = new Chart(temperatureChartContext, {
+        type: 'line',
+        data: {
+            labels: temperatureHistory,
+            datasets: [
+                {
+                    data: temperatureHistory,
+                    fill: false,
+                    label: 'Average Temperature: ' + averageTemperature + '°C',
+                    radius: 0,
+                    borderColor: "#ebaf29",
+                    backgroundColor: "#ebaf29",
+                    borderWidth: 0.8
+                }
+            ]
+        },
+        options: {
+            scaleShowValues: false,
+            elements: {
+                line: {
+                    tension: 0
+                }
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        min: minTemperatureScale,
+                        max: maxTemperatureScale
+                        }
+                    }],
+                xAxes: [{
+                    display: false
+                    }]
+                }
+            }
+        });
+    });
+    </script>
+
+    <script type="text/javascript">
+    $( document ).ready(function() {
+        var humidityChartContext = document.getElementById('humidityChart{{ room.id }}').getContext("2d");
+        var humidityHistory = JSON.parse('{{ room.humidityHistory|safe }}');
+
+        // reverses the order of the array to get the graph to show time from
+        // left to right
+        humidityHistory.reverse();
+
+        var total = 0;
+        for(var i = 0; i < humidityHistory.length; i++) {
+            total += parseInt(humidityHistory[i]);
+        }
+
+        var averageHumidity = Math.round(total / humidityHistory.length);
+        var maxHumidityScale = averageHumidity + 10;
+        var minHumidityScale = averageHumidity - 10;
+
+        var humidityChart = new Chart(humidityChartContext, {
+        type: 'line',
+        data: {
+            labels: humidityHistory,
+            datasets: [
+                {
+                    data: humidityHistory,
+                    fill: false,
+                    label: 'Average Humidity: ' + averageHumidity + '%',
+                    radius: 0,
+                    borderColor: "#3e84cd",
+                    backgroundColor: "#3e84cd",
+                    borderWidth: 0.8
+                }
+            ]
+        },
+        options: {
+            scaleShowValues: false,
+            elements: {
+                line: {
+                    tension: 0
+                }
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        min: minHumidityScale,
+                        max: maxHumidityScale
+                        }
+                    }],
+                xAxes: [{
+                    display: false
+                    }]
+                }
+            }
+        });
+    });
+    </script>
+    {% endif %}
+
+    {% endfor %}
+{% endif %}
+
+
 {% endblock %}
