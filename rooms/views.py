@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from rooms.models import SensorData, Room, Plant, Journal, Tag
-from rooms.forms import RoomForm, PlantForm
+from rooms.forms import RoomForm, PlantForm, JournalForm
 import json
 
 
@@ -32,7 +32,6 @@ def rooms(request):
         room.humidityHistory = json.dumps(humidityHistory)
 
         # add journal entries for each room
-
         journalEntries = Journal.objects.filter(
             tags__text__icontains=room.name).order_by('-dateUpdated')
         room.journalEntries = journalEntries
@@ -124,3 +123,65 @@ def deletePlant(request, plant_id):
         return redirect('rooms')
     else:
         return redirect('rooms')
+
+
+@login_required
+def journalDetails(request, journal_id, room_tag=""):
+    if request.method == 'POST':
+        if journal_id == 0:
+            journalForm = JournalForm(request.POST)
+        else:
+            journal = Journal.objects.get(pk=journal_id)
+            journalForm = JournalForm(request.POST, instance=journal)
+
+        if journalForm.is_valid():
+            entry = journalForm.save(commit=False)
+            entry.author = request.user
+            entry.save()
+            journalForm.save_m2m()
+
+            return redirect('journalHome')
+
+    else:
+        if journal_id == 0:
+            if room_tag != "":
+                roomNameTag = Tag.objects.filter(text__icontains=room_tag)
+                journalForm = JournalForm(initial={'tags': roomNameTag})
+            else:
+                journalForm = JournalForm()
+
+        else:
+            journal = Journal.objects.get(pk=journal_id)
+            journalForm = JournalForm(instance=journal)
+
+    context = {
+        'journalForm': journalForm,
+        'nbar': 'journal'
+    }
+
+    return render(request, 'rooms/journal.html', context)
+
+
+@login_required
+def journalHome(request):
+
+    journalEntries = Journal.objects.order_by('-dateUpdated')
+
+    context = {
+        'nbar': 'journal',
+        'journalEntries': list(journalEntries)
+    }
+    return render(request, 'rooms/journal_home.html', context)
+
+
+@login_required
+def deleteJournalEntry(request, journal_id):
+    if request.method == 'POST':
+        confirmed = request.POST.get('confirmed')
+        if confirmed == 'true':
+            entry = Journal.objects.filter(pk=journal_id).delete()
+        else:
+            print("not confirmed")
+        return redirect('journalHome')
+    else:
+        return redirect('journalHome')

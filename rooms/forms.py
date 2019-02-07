@@ -1,5 +1,5 @@
 from django import forms
-from .models import Room, Plant
+from .models import Room, Plant, Journal
 
 
 class RoomForm(forms.ModelForm):
@@ -21,3 +21,11 @@ class PlantForm(forms.ModelForm):
     description = forms.CharField(label="Description", widget=forms.Textarea)
     datePlanted = forms.DateTimeField(label="Date Planted")
     room_fk = forms.ModelChoiceField(queryset=Room.objects.all(), label="Room")
+
+
+class JournalForm(forms.ModelForm):
+
+    class Meta:
+        model = Journal
+        fields = ('text', 'tags')
+        exclude = ['author']
