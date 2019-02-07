@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+<!--Loads the humanize library to allow number formats to be human readable-->
+{% load humanize %}
+
+{% block title %}gromari - Rooms{% endblock %}
+
+{% block content%}
+<div class="text-center pb-1">
+    <a class="text-dark" href="{% url 'journalDetails' 0 %}">
+        <img src="{% static 'img/add-new.png' %}" height="20px"><span class="pl-1">Add Journal Entry</span>
+    </a>
+</div>
+
+<div class="container-fluid" id="journalEntries{{ room.id }}">
+    <table class="table table-striped table-hover table-bordered table-sm" style="font-size:13px">
+        <thead>
+            <tr>
+                <th class="text-center">Date</th>
+                <th class="text-center">Author</th>
+                <th class="text-center">Entry</th>
+                <th class="text-center">Tags</th>
+                <th class="text-center">Edit/Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in journalEntries %}
+                <tr>
+                    <td>{{ entry.dateUpdated|date:"d b Y, H:i" }}</td>
+                    <td>{{ entry.author.get_full_name }}</td>
+                    <td>{{ entry.text }}</td>
+                    <td>
+                    {% for tag in entry.tags.all %}
+                        {{ tag }}&nbsp;&nbsp;&nbsp;&nbsp;
+                    {% endfor %}
+                    </td>
+                    <td class="text-center">
+                    <span class="pr-3"><a class="text-dark" href="{% url 'journalDetails' entry.id %}"><img src="{% static 'img/edit.png' %}" height="14px"></a></span>
+                    <span><a class="text-dark" data-toggle="modal" data-target="#modalDeleteJournalEntry{{ entry.id }}" href=""><img src="{% static 'img/delete.png' %}" height="14px"></a></span>
+                    </td>
+                </tr>
+
+                <!-- Modal delete journal entry -->
+                <div class="modal fade" id="modalDeleteJournalEntry{{ entry.id }}" tabindex="-1" role="dialog" aria-labelledby="modalDeleteJournalEntryTitle{{ entry.id }}" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalDeleteJournalEntryTitle{{ entry.id }}">Delete Entry from {{ entry.dateUpdated }}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete the entry from {{ entry.dateUpdated }}?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button id="deleteJournalEntryConfirm{{ entry.id }}" type="button" class="btn btn-danger">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script type="text/javascript">
+                // controls the modal for deleting a plant and fires the POST request to
+                // execute the delete command on the server
+                $("#deleteJournalEntryConfirm{{ entry.id }}").click(function() {
+
+                    $.ajax({
+                        url : "{% url 'deleteJournalEntry' entry.id %}",
+                        type: "POST",
+                        data : {csrfmiddlewaretoken: '{{ csrf_token }}', confirmed: 'true'},
+                        success: function(data){
+                            $('#modalDeleteJournalEntry{{ entry.id }}').modal('hide');
+                            location.reload();
+                        }
+                    });
+                });
+                </script>
+                
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
