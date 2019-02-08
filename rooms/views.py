@@ -172,10 +172,12 @@ def journalDetails(request, journal_id, room_tag=""):
 def journalHome(request):
 
     journalEntries = Journal.objects.order_by('-dateUpdated')
+    allTags = Tag.objects.order_by('text')
 
     context = {
         'nbar': 'journal',
-        'journalEntries': list(journalEntries)
+        'journalEntries': list(journalEntries),
+        'allTags': list(allTags)
     }
     return render(request, 'rooms/journal_home.html', context)
 
