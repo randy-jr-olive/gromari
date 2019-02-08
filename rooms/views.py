@@ -33,7 +33,7 @@ def rooms(request):
 
         # add journal entries for each room
         journalEntries = Journal.objects.filter(
-            tags__text__icontains=room.name).order_by('-dateUpdated')
+            tags__text__icontains=room.name).order_by('-dateUpdated')[:20]
         room.journalEntries = journalEntries
 
     context = {
