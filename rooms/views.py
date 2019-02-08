@@ -53,6 +53,9 @@ def roomDetails(request, room_id):
             roomForm = RoomForm(request.POST, instance=room)
 
         if roomForm.is_valid():
+            # adds tag for room name if it doesn't exist
+            nameTag = Tag.objects.update_or_create(
+                text=roomForm.cleaned_data['name'])
             roomForm.save()
             return redirect('rooms')
 
@@ -94,6 +97,9 @@ def plantDetails(request, room_id, plant_id):
             plantForm = PlantForm(request.POST, instance=plant)
 
         if plantForm.is_valid():
+            # adds tag for plant name if it doesn't exist
+            nameTag = Tag.objects.update_or_create(
+                text=plantForm.cleaned_data['name'])
             plantForm.save()
             return redirect('rooms')
 
