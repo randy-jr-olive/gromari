@@ -73,7 +73,7 @@ class Journal(models.Model):
     text = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     dateCreated = models.DateTimeField(auto_now_add=True)
-    dateUpdated = models.DateTimeField(auto_now=True)
+    dateUpdated = models.DateTimeField(blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
 
     class Meta:

@@ -27,5 +27,7 @@ class JournalForm(forms.ModelForm):
 
     class Meta:
         model = Journal
-        fields = ('text', 'tags')
+        fields = ('text', 'tags', 'dateUpdated')
         exclude = ['author']
+
+    dateUpdated = forms.DateTimeField(label="Date")

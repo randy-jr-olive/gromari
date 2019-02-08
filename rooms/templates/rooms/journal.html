@@ -7,7 +7,9 @@
 {% block title %}gromari - Journal {% endblock %}
 
 {% block head %}
-
+<!-- Load media for date time picker -->
+<link href="{% static 'css/jquery.datetimepicker.min.css' %}" rel="stylesheet">
+<script src="{% static 'js/jquery.datetimepicker.full.min.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -23,5 +25,13 @@
         </div>
     </form>
 </div>
+
+<script>
+  $(function () {
+    $("#id_dateUpdated").datetimepicker({
+      format: 'Y-m-d H:i',
+    });
+  });
+</script>
 
 {% endblock %}
