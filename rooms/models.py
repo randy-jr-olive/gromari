@@ -15,6 +15,7 @@ class Room(models.Model):
         max_digits=5, decimal_places=2, default=0.00)
     currentHumidity = models.DecimalField(
         max_digits=5, decimal_places=2, default=0.00)
+    keepExpanded = models.BooleanField(default=False)
 
     class Meta:
         # Sets the plural form for display in the django admin app

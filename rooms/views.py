@@ -86,6 +86,21 @@ def deleteRoom(request, room_id):
     else:
         return redirect('rooms')
 
+@login_required
+def setExpandRoom(request, room_id, set_state):
+    if request.is_ajax():
+        room = Room.objects.get(pk=room_id)
+        if set_state == 0:
+            room.keepExpanded = False
+            room.save()
+        elif set_state == 1:
+            room.keepExpanded = True
+            room.save()
+        else:
+            print("no valid setting for keep expanded")
+
+        return redirect('rooms')
+
 
 @login_required
 def plantDetails(request, room_id, plant_id):
