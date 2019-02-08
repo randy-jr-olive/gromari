@@ -1,7 +1,6 @@
 from django import forms
 from .models import Room, Plant, Journal
 
-
 class RoomForm(forms.ModelForm):
 
     class Meta:

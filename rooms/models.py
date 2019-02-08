@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+
 class Room(models.Model):
     # Model of information related to an individual grow room
 
@@ -10,8 +11,10 @@ class Room(models.Model):
     lightsOn = models.IntegerField(default=0)
     lightsOff = models.IntegerField(default=1)
     activeSensor = models.BooleanField(default=False)
-    currentTemperature = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
-    currentHumidity = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    currentTemperature = models.DecimalField(
+        max_digits=5, decimal_places=2, default=0.00)
+    currentHumidity = models.DecimalField(
+        max_digits=5, decimal_places=2, default=0.00)
 
     class Meta:
         # Sets the plural form for display in the django admin app
@@ -127,7 +130,8 @@ class SensorData(models.Model):
         return str(self.timestamp)
 
     def getLatestReading(self, roomID):
-        latestReading = SensorData.objects.filter(room_fk=roomID).latest('timestamp')
+        latestReading = SensorData.objects.filter(
+            room_fk=roomID).latest('timestamp')
         temperature = latestReading.temperature
         humidity = latestReading.humidity
 
