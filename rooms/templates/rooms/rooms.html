@@ -162,7 +162,7 @@
                                             <tbody>
                                                 {% for entry in room.journalEntries %}
                                                     <tr>
-                                                        <td><a href="{% url 'journalDetails' entry.id %}">{{ entry.dateUpdated|date:"d b Y, H:i" }}</a></td>
+                                                        <td><a href="{% url 'journalDetails' entry.id %}">{{ entry.dateUpdated|date:"d b Y - H:i" }}</a></td>
                                                         <td>{{ entry.author.get_full_name }}</td>
                                                         <td>{{ entry.text }}</td>
                                                         <!--

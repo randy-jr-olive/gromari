@@ -28,7 +28,7 @@
         <tbody>
             {% for entry in journalEntries %}
                 <tr>
-                    <td>{{ entry.dateUpdated|date:"d b Y, H:i" }}</td>
+                    <td>{{ entry.dateUpdated|date:"d b Y - H:i" }}</td>
                     <td>{{ entry.author.get_full_name }}</td>
                     <td>{{ entry.text }}</td>
                     <td>
