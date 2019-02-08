@@ -65,7 +65,7 @@
                                         <div>{{ room.lightsOn }} hours on</div>
                                         <div>{{ room.lightsOff }} hours off</div>
                                         <div class="mt-2"><b>Description</b></div>
-                                        <div>{{ room.description }}</div>
+                                        <div>{{ room.description|linebreaks }}</div>
 
                                     </div>
                                     {% if room.activeSensor == True %}
@@ -97,7 +97,7 @@
                                         </div>
                                         <div><b>Species:</b> {{ plant.species }}</div>
                                         <div><b>Date Planted:</b> {{ plant.datePlanted|date:"d b Y" }}</div>
-                                        <div><b>Age:</b> {{ plant.datePlanted|timesince }}</div>
+                                        <div><b>Age:</b> {{ plant.datePlanted|naturaltime }}</div>
                                     </div>
                                     <div class="p-1 col-12 col-sm-12 col-md-8">
                                         <div><b>Description</b></div>
