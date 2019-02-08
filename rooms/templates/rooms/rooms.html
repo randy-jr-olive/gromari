@@ -52,6 +52,10 @@
                             <div class="row pb-1">
                                 <div><a class="col-auto text-dark" href="{% url 'roomDetails' room.id %}"><img src="{% static 'img/edit.png' %}" height="14px"><span class="p-1">Edit</span></a></div>
                                 <div><a class="col-auto text-dark" data-toggle="modal" data-target="#modalDeleteRoom{{ room.id }}" href=""><img src="{% static 'img/delete.png' %}" height="14px"><span class="p-1">Delete</span></a></div>
+                                <div class="ml-auto pr-3">
+                                    <input class="" type="checkbox" value="" id="keepExpanded{{ room.id }}">
+                                    <label class="pl-1" for="keepExpanded{{ room.id }}">keep expanded?</label>
+                                </div>
                             </div>
                             <li class="list-group-item">
                                 <div class="d-flex row">
@@ -239,20 +243,44 @@
     </script>
 
     <script type="text/javascript">
-    var isToggled{{ room.id }} = false;
+    // script controlling the toggling of the room details
+
+    var arrowDownSrc = "{% static 'img/arrow-dropdown.png' %}"
+    var arrowUpSrc = "{% static 'img/arrow-pullup.png' %}"
+    var isToggled{{ room.id }} = {{ room.keepExpanded|yesno:"true,false" }};
+
+    $( document ).ready(function() {
+        var keepExpanded = {{ room.keepExpanded|yesno:"true,false" }};
+
+        if(keepExpanded == true) {
+            $('#roomDetails{{ room.id }}').collapse("show");
+            $('#expandToggle{{ room.id }}').attr('src',arrowUpSrc);
+            $('#keepExpanded{{ room.id }}').prop("checked", true);
+        }
+
+    });
+
+    $("#keepExpanded{{ room.id }}").click(function() {
+        var currentKeepExpanded = $('#keepExpanded{{ room.id }}').prop("checked");
+        if (currentKeepExpanded == false){
+            $.get("{% url 'setExpandRoom' room.id 0 %}", function() {});
+        } else {
+            $.get("{% url 'setExpandRoom' room.id 1 %}", function() {});
+        }
+    });
 
     $("#expandToggle{{ room.id }}").click(function() {
+        var keepExpanded = {{ room.keepExpanded|yesno:"true,false" }};
 
-        var arrowDownSrc = "{% static 'img/arrow-dropdown.png' %}"
-        var arrowUpSrc = "{% static 'img/arrow-pullup.png' %}"
-
-            if(isToggled{{ room.id }} == false) {
-                $('#expandToggle{{ room.id }}').attr('src',arrowUpSrc);
+        if(isToggled{{ room.id }} == false) {
+            $('#expandToggle{{ room.id }}').attr('src',arrowUpSrc);
+            if(keepExpanded == false) {
                 isToggled{{ room.id }} = true;
-            } else {
-                $('#expandToggle{{ room.id }}').attr('src',arrowDownSrc);
-                isToggled{{ room.id }} = false;
             }
+        } else {
+            $('#expandToggle{{ room.id }}').attr('src',arrowDownSrc);
+            isToggled{{ room.id }} = false;
+        }
     });
     </script>
 
