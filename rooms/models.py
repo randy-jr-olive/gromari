@@ -65,6 +65,7 @@ class Tag(models.Model):
     class Meta:
         # Sets the plural form for display in the django admin app
         verbose_name_plural = "Tags"
+        ordering = ['text']
 
     def __str__(self):
         # Sets the string that is returned on the list for this model on the

@@ -168,6 +168,20 @@ def archivePlant(request, plant_id):
 
 
 @login_required
+def journalHome(request):
+
+    journalEntries = Journal.objects.order_by('-dateUpdated')
+    allTags = Tag.objects.all()
+
+    context = {
+        'nbar': 'journal',
+        'journalEntries': list(journalEntries),
+        'allTags': list(allTags)
+    }
+    return render(request, 'rooms/journal_home.html', context)
+
+
+@login_required
 def journalDetails(request, journal_id, room_tag=""):
     if request.method == 'POST':
         if journal_id == 0:
@@ -202,20 +216,6 @@ def journalDetails(request, journal_id, room_tag=""):
     }
 
     return render(request, 'rooms/journal.html', context)
-
-
-@login_required
-def journalHome(request):
-
-    journalEntries = Journal.objects.order_by('-dateUpdated')
-    allTags = Tag.objects.order_by('text')
-
-    context = {
-        'nbar': 'journal',
-        'journalEntries': list(journalEntries),
-        'allTags': list(allTags)
-    }
-    return render(request, 'rooms/journal_home.html', context)
 
 
 @login_required
