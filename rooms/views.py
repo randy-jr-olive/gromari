@@ -15,9 +15,11 @@ def rooms(request):
         # connected tables
 
         # add extra plant info for each room
-        plantCount = Plant.objects.filter(room_fk=room.id).count()
-        plants = Plant.objects.filter(room_fk=room.id).order_by('name')
-        room.plantCount = plantCount
+        plantCount = Plant.objects.filter(
+            room_fk=room.id, isArchived=False).count()
+        plants = Plant.objects.filter(
+            room_fk=room.id, isArchived=False).order_by('name')
+        room.plantCount = plants.count()
         room.plants = plants
 
         # add sensor readings for each room
@@ -86,6 +88,7 @@ def deleteRoom(request, room_id):
     else:
         return redirect('rooms')
 
+
 @login_required
 def setExpandRoom(request, room_id, set_state):
     if request.is_ajax():
@@ -139,6 +142,24 @@ def deletePlant(request, plant_id):
         confirmed = request.POST.get('confirmed')
         if confirmed == 'true':
             plant = Plant.objects.filter(pk=plant_id).delete()
+        else:
+            print("not confirmed")
+        return redirect('rooms')
+    else:
+        return redirect('rooms')
+
+
+@login_required
+def archivePlant(request, plant_id):
+    if request.method == 'POST':
+        confirmed = request.POST.get('confirmed')
+        if confirmed == 'true':
+            plant = Plant.objects.get(pk=plant_id)
+            # sets the flag for isArchived to true and detaches the plant from
+            # the room it was in by setting room_fk to None
+            plant.isArchived = True
+            plant.room_fk = None
+            plant.save()
         else:
             print("not confirmed")
         return redirect('rooms')

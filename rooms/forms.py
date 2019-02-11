@@ -13,13 +13,13 @@ class PlantForm(forms.ModelForm):
 
     class Meta:
         model = Plant
-        fields = ('name', 'species', 'description', 'datePlanted', 'room_fk')
+        fields = ('name', 'species', 'description', 'datePlanted', 'room_fk', 'isArchived')
 
     name = forms.CharField(max_length=200, label="Plant Name")
     species = forms.CharField(max_length=200, label="Species")
     description = forms.CharField(label="Description", widget=forms.Textarea)
     datePlanted = forms.DateTimeField(label="Date Planted")
-    room_fk = forms.ModelChoiceField(queryset=Room.objects.all(), label="Room")
+    room_fk = forms.ModelChoiceField(required=False, queryset=Room.objects.all(), label="Room")
 
 
 class JournalForm(forms.ModelForm):

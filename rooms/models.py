@@ -42,9 +42,10 @@ class Plant(models.Model):
     species = models.CharField(max_length=200)
     datePlanted = models.DateTimeField()
     description = models.TextField()
-
     # foreign key of the room that houses this plant
-    room_fk = models.ForeignKey('Room', on_delete=models.CASCADE)
+    room_fk = models.ForeignKey('Room', on_delete=models.CASCADE, default="", blank=True, null=True)
+    # boolean to track if a plant is archived
+    isArchived = models.BooleanField(default=False)
 
     class Meta:
         # Sets the plural form for display in the django admin app
