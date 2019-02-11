@@ -97,7 +97,7 @@
                                         </div>
                                         <div><b>Species:</b> {{ plant.species }}</div>
                                         <div><b>Date Planted:</b> {{ plant.datePlanted|date:"d b Y" }}</div>
-                                        <div><b>Age:</b> {{ plant.datePlanted|naturaltime }}</div>
+                                        <div><b>Age:</b> {{ plant.datePlanted|timesince }}</div>
                                     </div>
                                     <div class="p-1 col-12 col-sm-12 col-md-8">
                                         <div><b>Description</b></div>
@@ -157,25 +157,17 @@
                                         <table class="table table-striped table-hover table-bordered table-sm" style="font-size:13px">
                                             <thead>
                                                 <tr>
-                                                    <th class="text-center">Date</th>
-                                                    <th class="text-center">Author</th>
+                                                    <th class="text-center" width="18%">Date</th>
+                                                    <th class="text-center" width="18%">Author</th>
                                                     <th class="text-center">Entry</th>
-                                                    <!--<th class="text-center">Tags</th>-->
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {% for entry in room.journalEntries %}
                                                     <tr>
-                                                        <td><a href="{% url 'journalDetails' entry.id %}">{{ entry.dateUpdated|date:"d b Y - H:i" }}</a></td>
-                                                        <td>{{ entry.author.get_full_name }}</td>
+                                                        <td class="text-center"><a href="{% url 'journalDetails' entry.id %}">{{ entry.dateUpdated|date:"d b Y - H:i" }}</a></td>
+                                                        <td class="text-center">{{ entry.author.get_full_name }}</td>
                                                         <td>{{ entry.text }}</td>
-                                                        <!--
-                                                        <td>
-                                                        {% for tag in entry.tags.all %}
-                                                            <a href="#">{{ tag }}</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                                                        {% endfor %}
-                                                        </td>
-                                                    -->
                                                     </tr>
                                                 {% endfor %}
                                             </tbody>

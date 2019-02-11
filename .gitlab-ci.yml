@@ -14,8 +14,8 @@ test:
     - docker pull ubuntu:rolling # checks and pulls newer version of ubuntu image
     - docker-compose -f docker-compose.yml build
     - docker-compose -f docker-compose.yml up -d --force-recreate
-    - docker exec gromari-web python3 manage.py test --noinput
-    - docker exec gromari-web py.test --cov=rooms */tests.py
+    - docker exec gromari-web coverage run --source='.' manage.py test --noinput
+    - docker exec gromari-web coverage report
     - docker-compose -f docker-compose.yml down
   tags:
     - shell # tag used for selection of build runner
