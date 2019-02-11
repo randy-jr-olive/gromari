@@ -34,7 +34,7 @@
                         <td>{{ entry.text }}</td>
                         <td class="text-center">
                         {% for tag in entry.tags.all %}
-                            {{ tag }}&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="#" class="badge badge-primary pl-1">{{ tag }}<a>
                         {% endfor %}
                         </td>
                         <td class="text-center">
@@ -89,7 +89,7 @@
         <div class="border p-1" style="font-size:13px">
             <h5 class="text-center">Tags</h5>
             {% for tag in allTags %}
-                <a href="">{{ tag.text }}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="#" class="badge badge-primary pl-1">{{ tag.text }}</a>
             {% endfor %}
         </div>
     </div>
