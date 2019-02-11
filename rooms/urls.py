@@ -8,6 +8,7 @@ urlpatterns = [
     path('room/delete/<int:room_id>', views.deleteRoom, name='deleteRoom'),
     path('room/expand/<int:room_id>/<int:set_state>', views.setExpandRoom, name='setExpandRoom'),
     path('room/<int:room_id>/plant/<int:plant_id>', views.plantDetails, name='plantDetails'),
+    path('plant/archive/<int:plant_id>', views.archivePlant, name='archivePlant'),
     path('plant/delete/<int:plant_id>', views.deletePlant, name='deletePlant'),
     path('journal', views.journalHome, name='journalHome'),
     path('journal/delete/<int:journal_id>', views.deleteJournalEntry, name='deleteJournalEntry'),

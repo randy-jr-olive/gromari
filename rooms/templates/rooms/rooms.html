@@ -91,9 +91,16 @@
                                 <div class="d-flex row">
                                     <div class="mr-auto p-1 col-12 col-sm-12 col-md-4">
                                         <div class="mb-1" style="font-size:15px;"><b>{{ plant.name }}</b></div>
-                                        <div class="row p-2">
-                                            <div class="pr-2"><a class="p-1 col-auto text-dark" href="{% url 'plantDetails' room.id plant.id %}"><img src="{% static 'img/edit.png' %}" height="14px"><span class="p-1">Edit</span></a></div>
-                                            <div><a class="col-auto text-dark" data-toggle="modal" data-target="#modalDeletePlant{{ plant.id }}" href=""><img src="{% static 'img/delete.png' %}" height="14px"><span class="p-1">Delete</span></a></div>
+                                        <div class="row p-1">
+                                            <div class="pr-1">
+                                                <a class="col-auto text-dark" href="{% url 'plantDetails' room.id plant.id %}"><img src="{% static 'img/edit.png' %}" height="14px"><span class="pl-1">Edit</span></a>
+                                            </div>
+                                            <div>
+                                                <a class="col-auto text-dark" data-toggle="modal" data-target="#modalDeletePlant{{ plant.id }}" href=""><img src="{% static 'img/delete.png' %}" height="14px"><span class="pl-1">Delete</span></a>
+                                            </div>
+                                            <div>
+                                                <a class="col-auto text-dark" data-toggle="modal" data-target="#modalArchivePlant{{ plant.id }}" href=""><img src="{% static 'img/archive.png' %}" height="14px"><span class="pl-1">Archive</span></a>
+                                            </div>
                                         </div>
                                         <div><b>Species:</b> {{ plant.species }}</div>
                                         <div><b>Date Planted:</b> {{ plant.datePlanted|date:"d b Y" }}</div>
@@ -138,6 +145,44 @@
                                     data : {csrfmiddlewaretoken: '{{ csrf_token }}', confirmed: 'true'},
                                     success: function(data){
                                         $('#modalDeletePlant{{ plant.id }}').modal('hide');
+                                        location.reload();
+                                    }
+                                });
+                            });
+                            </script>
+
+                            <!-- Modal archive plant -->
+                            <div class="modal fade" id="modalArchivePlant{{ plant.id }}" tabindex="-1" role="dialog" aria-labelledby="modelArchivePlantTitle{{ plant.id }}" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modelArchivePlantTitle{{ plant.id }}">Archive {{ plant.name }}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to archive {{ plant.name }}?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            <button id="archivePlantConfirm{{ plant.id }}" type="button" class="btn btn-warning">Archive</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <script type="text/javascript">
+                            // controls the modal for archiving a plant and fires the POST request to
+                            // execute the archive command on the server
+                            $("#archivePlantConfirm{{ plant.id }}").click(function() {
+
+                                $.ajax({
+                                    url : "{% url 'archivePlant' plant.id %}",
+                                    type: "POST",
+                                    data : {csrfmiddlewaretoken: '{{ csrf_token }}', confirmed: 'true'},
+                                    success: function(data){
+                                        $('#modalArchivePlant{{ plant.id }}').modal('hide');
                                         location.reload();
                                     }
                                 });
