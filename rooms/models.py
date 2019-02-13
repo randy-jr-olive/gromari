@@ -1,12 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.utils import timezone
 
 
 class Room(models.Model):
     # Model of information related to an individual grow room
 
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
     description = models.TextField()
     lightsOn = models.IntegerField(default=0)
     lightsOff = models.IntegerField(default=1)
@@ -90,6 +90,18 @@ class Journal(models.Model):
         # Sets the string that is returned on the list for this model on the
         # django admin page
         return str(self.dateCreated)
+
+    def createJournalEntry(text, author, tags=None):
+        # takes in a set of values to create a new journal entry, tags are
+        # passed as a list of tags
+        if tags == None:
+            newJournalEntry = Journal(text=text, author=author, dateUpdated=timezone.now())
+            newJournalEntry.save()
+        else:
+            newJournalEntry = Journal(text=text, author=author, dateUpdated=timezone.now())
+            newJournalEntry.save()
+            newJournalEntry.tags.set(tags)
+            newJournalEntry.save()
 
 
 class Equipment(models.Model):

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 from rooms.models import SensorData, Room, Plant, Journal, Tag
 from rooms.forms import RoomForm, PlantForm, JournalForm
 import json
@@ -59,6 +60,11 @@ def roomDetails(request, room_id):
             nameTag = Tag.objects.update_or_create(
                 text=roomForm.cleaned_data['name'])
             roomForm.save()
+            # adds a new journal entry on new room creation
+            newRoomText = "Created a new room named " + roomForm.cleaned_data['name']
+            newRoomTag = Tag.objects.get(text=roomForm.cleaned_data['name'])
+            tags = [newRoomTag]
+            Journal.createJournalEntry(newRoomText, request.user, tags)
             return redirect('rooms')
 
     else:
@@ -81,7 +87,24 @@ def deleteRoom(request, room_id):
     if request.method == 'POST':
         confirmed = request.POST.get('confirmed')
         if confirmed == 'true':
-            room = Room.objects.filter(pk=room_id).delete()
+            room = Room.objects.get(pk=room_id)
+            # adds a new journal entry on room deletion
+            deleteRoomText = "Deleted a room named " + room.name
+            deleteRoomTag = Tag.objects.get(text=room.name)
+            tags = [deleteRoomTag]
+            # checks if the room also has plants, which will be cascade deleted
+            # adds the names of the plants to the tags and journal text
+            roomPlants = Plant.objects.filter(room_fk=room_id)
+            if roomPlants.count() > 0:
+                deleteRoomText += " and plants: " + " "
+                for plant in roomPlants:
+                    plantTag = Tag.objects.get(text=plant.name)
+                    tags.append(plantTag)
+                    deleteRoomText += plant.name
+
+            Journal.createJournalEntry(deleteRoomText, request.user, tags)
+            # finally, deletes the room object
+            room.delete()
         else:
             print("not confirmed")
         return redirect('rooms')
@@ -118,6 +141,13 @@ def plantDetails(request, room_id, plant_id):
             # adds tag for plant name if it doesn't exist
             nameTag = Tag.objects.update_or_create(
                 text=plantForm.cleaned_data['name'])
+            # adds a new journal entry on new plant creation
+            room = Room.objects.get(pk=room_id)
+            newPlantText = "Created a new plant named " + plantForm.cleaned_data['name'] + ' in room ' + room.name
+            newPlantTag = Tag.objects.get(text=plantForm.cleaned_data['name'])
+            roomNameTag= Tag.objects.get(text=room.name)
+            tags = [newPlantTag, roomNameTag]
+            Journal.createJournalEntry(newPlantText, request.user, tags)
             plantForm.save()
             return redirect('rooms')
 
@@ -141,7 +171,14 @@ def deletePlant(request, plant_id):
     if request.method == 'POST':
         confirmed = request.POST.get('confirmed')
         if confirmed == 'true':
-            plant = Plant.objects.filter(pk=plant_id).delete()
+            plant = Plant.objects.get(pk=plant_id)
+            # adds a new journal entry on plant deletion
+            deletePlantText = "Deleted a plant named " + plant.name
+            deletePlantTag = Tag.objects.get(text=plant.name)
+            tags = [deletePlantTag]
+            Journal.createJournalEntry(deletePlantText, request.user, tags)
+            # finally, deletes the plant object
+            plant.delete()
         else:
             print("not confirmed")
         return redirect('rooms')
