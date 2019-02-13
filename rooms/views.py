@@ -196,7 +196,17 @@ def archivePlant(request, plant_id):
             # the room it was in by setting room_fk to None
             plant.isArchived = True
             plant.room_fk = None
+            # hashed the plant name with the date to allow for the name to be
+            # reused for a new plant
+            originalPlantName = plant.name
+            plant.name = plant.name + "_archived_on_" + str(timezone.now())
             plant.save()
+            # adds a new journal entry on plant archived
+            archivedPlantText = "Archived a plant named " + originalPlantName
+            archivedPlantTag = Tag.objects.get(text=originalPlantName)
+            tags = [archivedPlantTag]
+            Journal.createJournalEntry(archivedPlantText, request.user, tags)
+
         else:
             print("not confirmed")
         return redirect('rooms')
