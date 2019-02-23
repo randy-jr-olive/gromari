@@ -14,6 +14,19 @@ Docker Compose is available here: [https://docs.docker.com/compose/](https://doc
 
 ### Running
 
+You will need to make 2 environment files and place them in the root of the source directory. Name the first file **postgres-variables-dev.env** and add the following line:
+
+POSTGRES_PASSWORD=putYourPostgresPasswordHere
+
+Name second file **web-variables-dev.env** and add the following lines:
+
+PYTHONUNBUFFERED=1
+DATABASE_NAME=postgres
+DATABASE_USER=postgres
+DATABASE_PASSWORD=putYourPostgresPasswordHere
+DATABASE_HOST=db
+DJANGO_SETTINGS_MODULE=gromari.settings
+
 From within the source code directory run the following command:
 `docker-compose -f docker-compose.yml up`
 
@@ -23,9 +36,11 @@ From within the source code directory run the following command:
 
 ## Built With
 
-* Django & Python3
+* [Django](https://www.djangoproject.com/) & Python3
 * BeautifulSoup4
 * Docker
+* [Bootstrap4](https://getbootstrap.com/)
+* [chart.js](https://www.chartjs.org/)
 
 ## Authors
 
