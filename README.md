@@ -36,9 +36,9 @@ From within the source code directory run the following command:
 
 ## Built With
 
-* [Django](https://www.djangoproject.com/) & Python3
-* BeautifulSoup4
-* Docker
+* [Django](https://www.djangoproject.com/) & [Python3](https://www.python.org/)
+* [BeautifulSoup4](https://www.crummy.com/software/BeautifulSoup/)
+* [Docker](https://www.docker.com/)
 * [Bootstrap4](https://getbootstrap.com/)
 * [chart.js](https://www.chartjs.org/)
 
