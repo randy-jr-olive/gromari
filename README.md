@@ -13,8 +13,8 @@ Docker can be obtained here: [https://www.docker.com/get-started](https://www.do
 Docker Compose is available here: [https://docs.docker.com/compose/](https://docs.docker.com/compose/)
 
 ### Running
-
-You will need to make 2 environment files and place them in the root of the source directory. Name the first file **postgres-variables-dev.env** and add the following line:
+ Clone the repository and change directory into the root for the source.  
+You will need to make 2 environment files and place them in the root of the source directory.  Name the first file **postgres-variables-dev.env** and add the following line:
 
 POSTGRES_PASSWORD=putYourPostgresPasswordHere
 
