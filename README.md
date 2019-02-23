@@ -1,6 +1,6 @@
 # gromari
 
-A Python Django app that allows for the management of plant grow rooms. Each room has a list of plants and equipment contained within. A journal system is available to track plant progress, watering, fertilization, etc.
+Gromari is an app that allows for the management of plant grow rooms. Each room has a list of plants and equipment contained within. A journal system is available to track plant progress, watering, fertilization, etc. Tags are used to organize grow activites. Gromari is written in Python using Django.
 
 ## Getting Started
 
@@ -8,49 +8,18 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-The app is built using Docker containers and the docker-compose utility. Docker can be obtained here: [https://www.docker.com/get-docker](https://www.docker.com/get-docker).
+The app is built using Docker containers and the docker-compose utility.
+Docker can be obtained here: [https://www.docker.com/get-started](https://www.docker.com/get-started)
+Docker Compose is available here: [https://docs.docker.com/compose/](https://docs.docker.com/compose/)
 
-### Installing
+### Running
 
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
+From within the source code directory run the following command:
+`docker-compose -f docker-compose.yml up`
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+`docker exec gromari-web coverage run --source='.' manage.py test --noinput`
 
 ## Built With
 
