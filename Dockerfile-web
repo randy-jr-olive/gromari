@@ -4,9 +4,6 @@
 FROM ubuntu:rolling
 MAINTAINER Randy Olive <randy.jr.olive@gmail.com>
 
-# Add apt-cacher proxy
-RUN echo 'Acquire::http::Proxy "http://10.0.1.210:3142";' | tee /etc/apt/apt.conf.d/01proxy
-
 # Install apt-utils
 RUN apt-get update \
     && apt-get install apt-utils -y

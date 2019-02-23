@@ -8,8 +8,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-The app is built using Docker containers and the docker-compose utility.
-Docker can be obtained here: [https://www.docker.com/get-started](https://www.docker.com/get-started)
+The app is built using Docker containers and the docker-compose utility.  
+Docker can be obtained here: [https://www.docker.com/get-started](https://www.docker.com/get-started)  
 Docker Compose is available here: [https://docs.docker.com/compose/](https://docs.docker.com/compose/)
 
 ### Running
