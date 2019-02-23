@@ -18,7 +18,7 @@ You will need to make 2 environment files and place them in the root of the sour
 
 POSTGRES_PASSWORD=putYourPostgresPasswordHere
 
-Name second file **web-variables-dev.env** and add the following lines:
+Name the second file **web-variables-dev.env** and add the following lines:
 
 PYTHONUNBUFFERED=1
 DATABASE_NAME=postgres
